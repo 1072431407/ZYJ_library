@@ -1,3 +1,2 @@
-include ':libiarymode'
 include ':mylibrary'
 rootProject.name = "libiary"
