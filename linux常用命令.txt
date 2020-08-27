@@ -1,0 +1,8 @@
+查看版本号：mysql -V
+删除mysl：
+apt-get autoremove --purge mysql-server-版本号
+apt-get autoremove mysql-server
+apt-get remove mysql-common
+dpkg -l |grep ^rc|awk '{print $2}' |sudo xargs dpkg -P
+一键安装mysql5.7
+sudo apt-get install mysql-server mysql-client
