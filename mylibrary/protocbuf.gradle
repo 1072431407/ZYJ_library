@@ -1,0 +1,56 @@
+apply plugin: 'com.google.protobuf'
+//classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.8'
+
+android {
+    sourceSets {
+        main {
+            proto {
+                srcDir 'src/main/proto'
+            }
+        }
+    }
+    protobuf {
+        protoc {
+            artifact = "com.google.protobuf:protoc:3.11.0"
+        }
+        plugins {
+            grpc {
+                artifact = 'io.grpc:protoc-gen-grpc-java:1.27.0'
+            }
+        }
+        generateProtoTasks {
+            all().each {
+                task ->
+                    task.plugins {
+//                    javalite {}
+                        grpc {
+                            // Options added to --grpc_out
+                            option 'lite'
+                        }
+                    }
+                    task.builtins {
+                        remove java
+                    }
+                    task.builtins {
+                        java {}
+                        // Add cpp output without any option.
+                        // DO NOT omit the braces if you want this builtin to be added.
+//                    cpp {}
+                    }
+            }
+            all()*.plugins { grpc {} }
+        }
+        generatedFilesBaseDir = "$projectDir/src/main"
+        generateProtoTasks {
+            all()*.plugins {
+                grpc{
+                    setOutputSubDir 'java'
+                }
+            }
+        }
+    }
+
+    dependencies {
+        implementation 'com.google.protobuf:protobuf-java:3.11.0'
+    }
+}
